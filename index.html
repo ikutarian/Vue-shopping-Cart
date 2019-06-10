@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>购物车</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /** 商品未选中 */
+        .item-check-btn {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 1px solid #ccc;
+            border-radius: 50%;
+            text-align: center;
+            vertical-align: middle;
+            cursor: pointer;
+        }
+
+        /** 商品被选中 */
+        .item-check-btn.check {
+            background: #EE7A23;
+            border-color: #EE7A23;
+        }
+    </style>
+</head>
+<body>
+<div id="app" class="container" style="margin-top: 50px;">
+    <div v-for="item in productList">
+        <a class="item-check-btn" v-bind:class="{ check: item.checked }" @click="selectProduct(item)"></a>
+        <br><br/>
+
+        <img v-bind:src="item.productImage" width="50px" height="50px"/>
+        <br><br/>
+
+        <span style="font-size: 20px">{{ item.productName }}</span>
+        <br/><br/>
+
+        <div v-for="part in item.parts">赠送：{{ part.partsName }}</div>
+        <br/><br/>
+
+        单价: {{ item.productPrice | money }}
+        <br/><br/>
+
+        数量：
+        <button @click="changeQuantity(item, -1)"> -</button>
+        <input v-model="item.productQuantity" class="text-center">
+        <button @click="changeQuantity(item, 1)"> +</button>
+        <br/><br/>
+
+        总价: {{ item.productPrice * item.productQuantity | money }}
+
+        <button @click="deleteProduct(item)">删除</button>
+
+        <div style="height:5px; border-bottom:5px #ccc solid; margin-top: 20px; margin-bottom: 20px"></div>
+    </div>
+
+    <div style="margin-bottom: 30px">
+        <a class="item-check-btn" v-bind:class="{ check: selectAllFlag }" @click="selectAll"></a> 全选
+    </div>
+
+    <div style="margin-bottom: 30px">
+        总金额：{{ totalPrice | money }}
+    </div>
+</div>
+
+<script src="js/lib/jquery.min.js"></script>
+<script src="js/lib/bootstrap.min.js"></script>
+<script src="js/lib/vue.min.js"></script>
+<script src="js/lib/vue-resource.min.js"></script>
+<script src="js/cart.js"></script>
+</body>
+</html>
